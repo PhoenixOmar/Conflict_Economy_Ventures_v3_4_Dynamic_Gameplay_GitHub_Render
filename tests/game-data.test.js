@@ -1,0 +1,4 @@
+const test=require('node:test');const assert=require('node:assert/strict');
+const {STORY,FACTIONS,ROUND_DEFS,QUICK_INDICES,FULL_INDICES,factionScenario}=require('../game-data');
+test('five distinct rounds, three/five mode and shared story',()=>{assert.equal(ROUND_DEFS.length,5);assert.deepEqual(QUICK_INDICES,[0,2,4]);assert.deepEqual(FULL_INDICES,[0,1,2,3,4]);assert.ok(STORY.length>=5);});
+test('four resource-specific scenarios at each stage',()=>{assert.equal(FACTIONS.length,4);for(let i=0;i<4;i++){assert.ok(FACTIONS[i].mandate&&FACTIONS[i].secret);for(let n=0;n<5;n++){const sc=factionScenario(i,n);assert.ok(sc.prompt&&sc.stakes);assert.equal(sc.options.length,3);for(const op of sc.options){assert.ok(op.title&&op.outcome&&op.tradeoff);for(const key of ['capital','workforce','influence','stability','intel','morale'])assert.ok(Number.isFinite(op.delta[key]));}}}});
